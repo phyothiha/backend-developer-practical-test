@@ -15,12 +15,13 @@ class PostResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'          => $this->resource->id,
-            'title'       => $this->resource->title,
-            'description' => $this->resource->description,
+            'id'          => $this->id,
+            'title'       => $this->title,
+            'description' => $this->description,
             'tags'        => TagResource::collection($this->whenLoaded('tags')),
-            'like_counts' => $this->when(isset($this->resource->likes_count), $this->resource->likes_count),
-            'created_at'  => $this->resource->created_at,
+            'author'      => new UserResource($this->whenLoaded('author')),
+            'likes_count' => $this->whenCounted('likes'),
+            'created_at'  => $this->created_at,
         ];
     }
 }

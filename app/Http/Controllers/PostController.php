@@ -12,14 +12,26 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\PostResource;
+use App\Http\Filters\PostFilter;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostController extends Controller
 {
-    public function list()
+    /**
+     * Display a listing of the resource. 
+     */
+    public function list(PostFilter $filters): JsonResource
     {
-        $posts = Post::withCount('likes')->with('tags')->paginate();
-
-        return new PostCollection($posts);
+        // Include relationships
+        // /?include=likes,tags,author
+        
+        // Filter column values
+        // /?filter[createdAt]=2024-12-21&filter[ids]=1,2,3
+            
+        return PostResource::collection(
+            Post::filter($filters)->paginate()
+        );        
     }
 
     public function toggleReaction(PostToggleReactionRequest $request)
