@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', [LoginController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:ctj-api')->group(function () {
     Route::get('posts', [PostController::class, 'list']);
     Route::post('posts/reaction', [PostController::class, 'toggleReaction']);
 

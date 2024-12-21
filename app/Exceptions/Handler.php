@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Auth\AuthenticationException;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -43,6 +46,27 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+        
+        $this->renderable(function (AuthenticationException $e) {
+            return response()->json([
+                'status'  => Response::HTTP_UNAUTHORIZED,
+                'message' => $e->getMessage(),
+            ], Response::HTTP_UNAUTHORIZED);
+        });
+
+        $this->renderable(function (ModelNotFoundException $e) {
+            return response()->json([
+                'status'  => Response::HTTP_NOT_FOUND,
+                'message' => 'Model not found.',
+            ], Response::HTTP_NOT_FOUND);
+        });
+
+        $this->renderable(function (Throwable $e) {
+            return response()->json([
+                'status'  => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => 'Internal server error.',
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         });
     }
 }
