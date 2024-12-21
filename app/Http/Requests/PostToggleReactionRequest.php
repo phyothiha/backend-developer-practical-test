@@ -21,8 +21,8 @@ class PostToggleReactionRequest extends FormRequest
     public function rules()
     {
         return [
-            'post_id' => 'required|int|exists:posts,id',
-            'like'    => 'required|boolean',
+            'post_id' => ['required', 'int', 'exists:posts,id'],
+            'like'    => ['required', 'boolean'],
         ];
     }
 }
