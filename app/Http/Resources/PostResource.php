@@ -17,7 +17,7 @@ class PostResource extends JsonResource
         return [
             'id'          => $this->id,
             'title'       => $this->title,
-            'description' => $this->description,
+            'description' => $this->when($request->is('/posts'), $this->description),
             'tags'        => TagResource::collection($this->whenLoaded('tags')),
             'author'      => new UserResource($this->whenLoaded('author')),
             'likes_count' => $this->whenCounted('likes'),

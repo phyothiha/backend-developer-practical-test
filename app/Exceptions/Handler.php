@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\UserAlreadyLikedPostException;
 use App\Exceptions\UserLikeOwnPostException;
 use Illuminate\Validation\ValidationException;
+use App\Facades\ApiResponse;
 
 class Handler extends ExceptionHandler
 {
@@ -52,46 +53,40 @@ class Handler extends ExceptionHandler
         });
         
         $this->renderable(function (AuthenticationException $e) {
-            return response()->json([
-                'status'  => Response::HTTP_UNAUTHORIZED,
-                'message' => $e->getMessage(),
-            ], Response::HTTP_UNAUTHORIZED);
+            return ApiResponse::status(Response::HTTP_UNAUTHORIZED)
+                            ->message($e->getMessage())
+                            ->failed();
         });
 
         $this->renderable(function (ValidationException $e) {
-            return response()->json([
-                'status'  => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => $e->getMessage(),
-                'errors'  => $e->errors(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return ApiResponse::status(Response::HTTP_UNPROCESSABLE_ENTITY)
+                            ->error($e->errors())
+                            ->message($e->getMessage())
+                            ->failed();
         });
         
         $this->renderable(function (UserLikeOwnPostException $e) {
-            return response()->json([
-                'status'  => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => 'You cannot like your post',
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return ApiResponse::status(Response::HTTP_INTERNAL_SERVER_ERROR)
+                            ->message('You cannot like your post')
+                            ->failed();
         });
         
         $this->renderable(function (UserAlreadyLikedPostException $e) {
-            return response()->json([
-                'status'  => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => 'You already liked this post',
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return ApiResponse::status(Response::HTTP_INTERNAL_SERVER_ERROR)
+                            ->message('You already liked this post')
+                            ->failed();
         });
 
         $this->renderable(function (ModelNotFoundException $e) {
-            return response()->json([
-                'status'  => Response::HTTP_NOT_FOUND,
-                'message' => 'Model not found.',
-            ], Response::HTTP_NOT_FOUND);
+            return ApiResponse::status(Response::HTTP_NOT_FOUND)
+                            ->message('Model not found.')
+                            ->failed();
         });
 
         $this->renderable(function (Throwable $e) {
-            return response()->json([
-                'status'  => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => 'Internal server error.',
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return ApiResponse::status(Response::HTTP_INTERNAL_SERVER_ERROR)
+                            ->message('Internal server error.')
+                            ->failed();
         });
     }
 }

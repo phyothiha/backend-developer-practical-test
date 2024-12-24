@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\InternetServiceProvider\InternetServiceProviderInterface;
 use Illuminate\Http\Request;
 use App\Services\InternetServiceProvider\PaymentCalculatorInterface;
+use App\Facades\ApiResponse;
 
 class InternetServiceProviderController extends Controller
 {
@@ -14,8 +15,7 @@ class InternetServiceProviderController extends Controller
 
         $internetServiceProvider->setMonth($month);
 
-        return response()->json([
-            'data' => $paymentCalculator->calculateTotalAmount($internetServiceProvider),
-        ]);
+        return ApiResponse::data($paymentCalculator->calculateTotalAmount($internetServiceProvider))
+                            ->success();
     }
 }

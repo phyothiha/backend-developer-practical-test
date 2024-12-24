@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\EmployeeManagement\Applicant;
 use Illuminate\Http\Request;
+use App\Facades\ApiResponse;
 
 class JobController extends Controller
 {
@@ -15,8 +16,7 @@ class JobController extends Controller
     {
         $data = $this->applicant->applyJob();
         
-        return response()->json([
-            'data' => $data
-        ]);
+        return ApiResponse::data($data)
+                            ->success();
     }
 }

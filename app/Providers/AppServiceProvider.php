@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use App\Services\InternetServiceProvider\PaymentCalculatorInterface;
 use App\Services\InternetServiceProvider\MonthlyPaymentCalculator;
+use App\Http\ApiResponse;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
             PaymentCalculatorInterface::class,
             MonthlyPaymentCalculator::class,
         );
+        
+        $this->app->bind('api-response', function () {
+            return new ApiResponse;
+        });
     }
 
     /**

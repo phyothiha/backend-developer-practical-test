@@ -8,14 +8,15 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\PostResource;
 use App\Http\Filters\PostFilter;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Facades\ApiResponse;
+use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource. 
      */
-    public function list(PostFilter $filters): JsonResource
+    public function list(PostFilter $filters): JsonResponse
     {
         // Include relationships
         // /?include=likes,tags,author
@@ -23,9 +24,11 @@ class PostController extends Controller
         // Filter column values
         // /?filter[createdAt]=2024-12-21&filter[ids]=1,2,3
             
-        return PostResource::collection(
-            Post::filter($filters)->paginate()
-        );        
+        return ApiResponse::dataPaginated(
+            PostResource::collection(
+                Post::filter($filters)->paginate()
+            )
+        )->success();
     }
 
     /**
@@ -46,17 +49,13 @@ class PostController extends Controller
         if (! $request->like) {
             $post->likes()->where('user_id', Auth::id())->delete();
         
-            return response()->json([
-                'status'  => Response::HTTP_OK,
-                'message' => 'You unlike this post successfully',
-            ]);
+            return ApiResponse::message('You unlike this post successfully')
+                            ->success();
         } 
         
         $post->likes()->create(['user_id' => Auth::id()]);
         
-        return response()->json([
-            'status'  => Response::HTTP_OK,
-            'message' => 'You like this post successfully',
-        ]);
+        return ApiResponse::message('You like this post successfully')
+                            ->success();
     }
 }

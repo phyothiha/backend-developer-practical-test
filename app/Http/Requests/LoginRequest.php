@@ -56,7 +56,7 @@ class LoginRequest extends FormRequest
      */
     protected function modifyPayload(array $data): array
     {
-        // clone and remove `id` key from original 
+        // clone and remove `id` key
         $payload = array_filter($data, fn (string $key) => $key != 'id', ARRAY_FILTER_USE_KEY);
         
         // determine payload key 

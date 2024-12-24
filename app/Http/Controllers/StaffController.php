@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\EmployeeManagement\Staff;
+use App\Facades\ApiResponse;
 
 class StaffController extends Controller
 {
@@ -13,9 +14,8 @@ class StaffController extends Controller
     public function payroll()
     {
         $data = $this->staff->salary();
-    
-        return response()->json([
-            'data' => $data
-        ]);
+            
+        return ApiResponse::data($data)
+                            ->success();
     }
 }
