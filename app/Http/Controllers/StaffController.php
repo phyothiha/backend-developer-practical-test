@@ -6,7 +6,7 @@ use App\Services\EmployeeManagement\Staff;
 
 class StaffController extends Controller
 {
-    public function __construct(private readonly Staff $staff)
+    public function __construct(public readonly Staff $staff)
     {
     }
     

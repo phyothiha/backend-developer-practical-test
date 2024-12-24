@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
-    public function __construct(private readonly Applicant $applicant)
+    public function __construct(public readonly Applicant $applicant)
     {
     }
     
