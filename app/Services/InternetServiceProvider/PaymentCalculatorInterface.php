@@ -2,7 +2,7 @@
 
 namespace App\Services\InternetServiceProvider;
 
-interface ISPPaymentCalculatorInterface
+interface PaymentCalculatorInterface
 {
     public function calculateTotalAmount(InternetServiceProviderInterface $provider): float;
 }

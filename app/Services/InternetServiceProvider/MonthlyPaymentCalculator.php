@@ -2,10 +2,10 @@
 
 namespace App\Services\InternetServiceProvider;
 
-use App\Services\InternetServiceProvider\ISPPaymentCalculatorInterface;
+use App\Services\InternetServiceProvider\PaymentCalculatorInterface;
 use App\Services\InternetServiceProvider\InternetServiceProviderInterface;
 
-class MptPaymentCalculator implements ISPPaymentCalculatorInterface
+class MonthlyPaymentCalculator implements PaymentCalculatorInterface
 {
     public function calculateTotalAmount(InternetServiceProviderInterface $provider): float
     {

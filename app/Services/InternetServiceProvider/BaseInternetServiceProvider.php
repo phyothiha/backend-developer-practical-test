@@ -6,9 +6,9 @@ abstract class BaseInternetServiceProvider implements InternetServiceProviderInt
 {
     protected string $operator = 'operator';
     
-    protected int $month = 0;
+    protected int $month = 1;
     
-    protected float $monthlyFees = 0.00;
+    protected float $monthlyFees;
     
     public final function __construct()
     {

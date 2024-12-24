@@ -4,25 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Services\InternetServiceProvider\InternetServiceProviderInterface;
 use Illuminate\Http\Request;
-use App\Services\InternetServiceProvider\ISPPaymentCalculatorInterface;
+use App\Services\InternetServiceProvider\PaymentCalculatorInterface;
 
 class InternetServiceProviderController extends Controller
 {
-    protected ISPPaymentCalculatorInterface $paymentCalculator;
-
-    public function __construct(ISPPaymentCalculatorInterface $paymentCalculator)
-    {
-        $this->paymentCalculator = $paymentCalculator;
-    }
-    
-    public function getInvoiceAmount(Request $request, InternetServiceProviderInterface $internetServiceProvider)
+    public function getInvoiceAmount(Request $request, InternetServiceProviderInterface $internetServiceProvider, PaymentCalculatorInterface $paymentCalculator)
     {
         $month = $request->input('month', 1);
 
         $internetServiceProvider->setMonth($month);
 
         return response()->json([
-            'data' => $this->paymentCalculator->calculateTotalAmount($internetServiceProvider),
+            'data' => $paymentCalculator->calculateTotalAmount($internetServiceProvider),
         ]);
     }
 }
