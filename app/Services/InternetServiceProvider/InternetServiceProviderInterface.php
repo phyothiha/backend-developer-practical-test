@@ -4,7 +4,9 @@ namespace App\Services\InternetServiceProvider;
 
 interface InternetServiceProviderInterface
 {
-    public function setMonth(int $month);
-
-    public function calculateTotalAmount(): float|int;
+    public function setMonth(int $month): void;
+    
+    public function getMonth(): int;
+    
+	public function getMonthlyFees(): float;
 }
